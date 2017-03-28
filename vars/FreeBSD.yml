@@ -1,0 +1,2 @@
+__squid_db_dir: /var/db/squid
+__squid_conf_dir: /usr/local/etc/squid
