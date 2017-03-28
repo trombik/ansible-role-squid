@@ -1,8 +1,11 @@
-squid_user: squid
-squid_group: squid
+squid_user: "{{ __squid_user }}"
+squid_group: "{{ __squid_group }}"
 squid_log_dir: /var/log/squid
-squid_db_dir: "{{ __squid_db_dir }}"
-squid_service: squid
+squid_cache_dir: "{{ __squid_cache_dir }}"
+squid_coredump_dir: "{{ __squid_coredump_dir }}"
+squid_service: "{{ __squid_service }}"
 squid_conf_dir: "{{ __squid_conf_dir }}"
 squid_conf_file: "{{ __squid_conf_dir }}/squid.conf"
 squid_flags: ""
+
+squid_config: []

@@ -1,0 +1,7 @@
+---
+
+- name: Create rc.d fragment
+  template:
+    src: FreeBSD.rc.d.j2
+    dest: /etc/rc.conf.d/squid
+  notify: Restart squid

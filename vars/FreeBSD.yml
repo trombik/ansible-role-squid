@@ -1,2 +1,6 @@
-__squid_db_dir: /var/db/squid
+__squid_user: squid
+__squid_group: squid
+__squid_service: squid
+__squid_cache_dir: /var/squid/cache
 __squid_conf_dir: /usr/local/etc/squid
+__squid_coredump_dir: /var/squid/cache

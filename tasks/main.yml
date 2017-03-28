@@ -5,6 +5,8 @@
 
 - include: "install-{{ ansible_os_family }}.yml"
 
+- include: "configure-{{ ansible_os_family }}.yml"
+
 - name: Create log directory
   file:
     path: "{{ squid_log_dir }}"
@@ -14,10 +16,10 @@
     state: directory
   notify: Restart squid
 
-- name: Create db directory
+- name: Create squid_cache_dir directory
   file:
-    path: "{{ squid_db_dir }}"
-    mode: 0755
+    path: "{{ squid_cache_dir }}"
+    mode: 0750
     owner: "{{ squid_user }}"
     group: "{{ squid_group }}"
     state: directory
@@ -27,8 +29,12 @@
   template:
     src: squid.conf.j2
     dest: "{{ squid_conf_file }}"
-    validate: echo %s
   notify: Restart squid
+
+- name: Create cache hier
+  command: squid -z
+  args:
+    creates: "{{ squid_cache_dir }}/00"
 
 - name: Start squid
   service:
