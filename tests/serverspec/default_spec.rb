@@ -75,3 +75,9 @@ ports.each do |p|
     it { should be_listening }
   end
 end
+
+describe command("env http_proxy=http://127.0.0.1:3128 HTTPS_PROXY=http://127.0.0.1:3128 curl -sL -o /dev/null -D - http://example.org") do
+  its(:stdout) { should match (/^HTTP\/1\.\d 200 OK/) }
+  its(:stderr) { should match (/^$/) }
+  its(:exit_status) { should eq 0 }
+end
