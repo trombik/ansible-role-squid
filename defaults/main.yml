@@ -6,6 +6,6 @@ squid_coredump_dir: "{{ __squid_coredump_dir }}"
 squid_service: "{{ __squid_service }}"
 squid_conf_dir: "{{ __squid_conf_dir }}"
 squid_conf_file: "{{ __squid_conf_dir }}/squid.conf"
-squid_flags: ""
+squid_flags: "{{ __squid_flags }}"
 
 squid_config: []

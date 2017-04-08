@@ -17,6 +17,11 @@ when "freebsd"
   config = "/usr/local/etc/squid/squid.conf"
   cache_dir = "/var/squid/cache"
   default_group = "wheel"
+when "ubuntu"
+  user = "proxy"
+  group = "proxy"
+  cache_dir = "/var/spool/squid"
+  coredump_dir = "/var/spool/squid"
 end
 
 describe package(package) do
@@ -62,6 +67,14 @@ when "freebsd"
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
     its(:content) { should match(/^squid_flags="-u 3180"$/) }
+  end
+when "ubuntu"
+  describe file("/etc/default/squid") do
+    it { should be_file }
+    it { should be_mode 644 }
+    it { should be_owned_by default_user }
+    it { should be_grouped_into default_group }
+    its(:content) { should match(/^SQUID_ARGS="-YC -f \$CONFIG -u 3180"/) }
   end
 end
 

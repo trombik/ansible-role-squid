@@ -1,0 +1,7 @@
+---
+
+- name: Create default for squid init script
+  template:
+    src: Debian.default.j2
+    dest: /etc/default/squid
+  notify: Restart squid

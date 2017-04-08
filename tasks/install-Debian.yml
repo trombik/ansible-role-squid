@@ -1,0 +1,6 @@
+---
+
+- name: Install squid
+  apt:
+    name: squid
+    state: present
