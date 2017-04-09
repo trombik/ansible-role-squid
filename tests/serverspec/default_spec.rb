@@ -30,6 +30,7 @@ when "openbsd"
   group = "_squid"
   default_group = "wheel"
   coredump_dir = "/var/squid/cache"
+  # XXX should be [ 3128, 3180 ]
   ports = [ 3128 ]
 end
 
