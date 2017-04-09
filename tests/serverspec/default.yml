@@ -2,7 +2,7 @@
   roles:
     - ansible-role-squid
   vars:
-    squid_flags: "{{ __squid_flags }} -u 3180"
+    squid_flags: "{% if ansible_os_family == 'OpenBSD' %}{% else %}{{ __squid_flags }} -u 3180{% endif %}"
     squid_config:
       - "acl localnet src 10.0.0.0/8"
       - "acl localnet src 172.16.0.0/12"

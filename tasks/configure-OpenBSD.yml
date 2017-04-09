@@ -1,0 +1,27 @@
+---
+
+# XXX service module for OpenBSD has a bug that removes lines starting with
+# service name
+#
+# - name: Add squid_flags to rc.conf.local
+#   lineinfile:
+#     dest: /etc/rc.conf.local
+#     regexp: "^squid_flags="
+#     line: 'squid_flags="{{ squid_flags }}"'
+#     state: present
+#     validate: sh -n %s
+#   notify: Restart squid
+
+# XXX create ansible-role-login-conf. from
+# /usr/local/share/doc/pkg-readmes/squid-3.5.20
+#
+# System resource limits
+# ======================
+# The default system resource limits for file-descriptors are insufficient
+# for a moderately busy proxy. It may also be necessary to increase the
+# memory limits. You can add a service-specific class to /etc/login.conf:
+#
+# squid:\
+#         :datasize=1500M:\
+#         :openfiles=4096:\
+#         :tc=daemon:

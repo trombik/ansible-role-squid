@@ -21,6 +21,15 @@ when "freebsd"
 when "ubuntu"
   user = "proxy"
   group = "proxy"
+when "openbsd"
+  config = "/etc/squid/squid.conf"
+  cache_dir = "/var/squid/cache"
+  log_dir = "/var/squid/logs"
+  user = "_squid"
+  group = "_squid"
+  default_group = "wheel"
+  coredump_dir = "/var/squid/cache"
+  ports = [ 3128 ]
 end
 
 describe package(package) do
@@ -95,6 +104,16 @@ when "redhat"
     its(:stdout) { should match(/^squid_port_t\s+udp\s+#{ Regexp.escape(seliux_ports_udp.sort.join(", ")) }$/) }
     its(:stderr) { should match(/^$/) }
     its(:exit_status) { should eq 0 }
+  end
+when "openbsd"
+  describe file("/etc/rc.conf.local") do
+    it { should be_file }
+    it { should be_mode 644 }
+    it { should be_owned_by default_user }
+    it { should be_grouped_into default_group }
+    # XXX service module for OpenBSD has a bug that removes lines starting with
+    # service name
+    # its(:content) { should match(/^squid_flags=" -u 3180"$/) }
   end
 end
 

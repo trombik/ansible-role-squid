@@ -1,8 +1,8 @@
-__squid_user: squid
-__squid_group: squid
+__squid_user: _squid
+__squid_group: _squid
 __squid_service: squid
 __squid_cache_dir: /var/squid/cache
-__squid_conf_dir: /usr/local/etc/squid
+__squid_conf_dir: /etc/squid
 __squid_coredump_dir: /var/squid/cache
-__squid_log_dir: /var/log/squid
+__squid_log_dir: /var/squid/logs
 __squid_flags: ""

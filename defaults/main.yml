@@ -1,6 +1,6 @@
 squid_user: "{{ __squid_user }}"
 squid_group: "{{ __squid_group }}"
-squid_log_dir: /var/log/squid
+squid_log_dir: "{{ __squid_log_dir }}"
 squid_cache_dir: "{{ __squid_cache_dir }}"
 squid_coredump_dir: "{{ __squid_coredump_dir }}"
 squid_service: "{{ __squid_service }}"

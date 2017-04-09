@@ -1,0 +1,6 @@
+---
+
+- name: Install squid
+  openbsd_pkg:
+    name: squid
+    state: present

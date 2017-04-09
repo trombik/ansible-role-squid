@@ -4,4 +4,5 @@ __squid_service: squid
 __squid_cache_dir: /var/spool/squid
 __squid_conf_dir: /etc/squid
 __squid_coredump_dir: /var/spool/squid
+__squid_log_dir: /var/log/squid
 __squid_flags: -YC -f $CONFIG
