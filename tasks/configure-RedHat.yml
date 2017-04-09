@@ -1,0 +1,29 @@
+---
+
+- name: Configure SELinux policy (TCP)
+  seport:
+    ports: "{{ squid_selinux_port_tcp | join(',') }}"
+    proto: tcp
+    setype: squid_port_t
+    reload: yes
+    state: present
+
+- name: Configure SELinux policy (UDP)
+  seport:
+    ports: "{{ squid_selinux_port_udp | join(',') }}"
+    proto: udp
+    setype: squid_port_t
+    reload: yes
+    state: present
+
+- name: Enabel SELinux squid_connect_any
+  seboolean:
+    name: squid_connect_any
+    state: "{{ squid_selinux_squid_connect_any }}"
+    persistent: yes
+
+- name: Create default for squid init script
+  template:
+    src: RedHat.sysconfig.j2
+    dest: /etc/sysconfig/squid
+  notify: Restart squid

@@ -6,9 +6,10 @@ config  = "/etc/squid/squid.conf"
 user    = "squid"
 group   = "squid"
 ports   = [ 3128, 3180 ]
+seliux_ports_udp = [ 3180, 3401, 4827 ]
 log_dir = "/var/log/squid"
-cache_dir  = "/var/lib/squid/cache"
-coredump_dir = "/var/squid/cache"
+cache_dir  = "/var/spool/squid"
+coredump_dir = "/var/spool/squid"
 default_user = "root"
 default_group = "root"
 
@@ -20,8 +21,6 @@ when "freebsd"
 when "ubuntu"
   user = "proxy"
   group = "proxy"
-  cache_dir = "/var/spool/squid"
-  coredump_dir = "/var/spool/squid"
 end
 
 describe package(package) do
@@ -45,8 +44,8 @@ end
 describe file(config) do
   it { should be_file }
   it { should be_owned_by default_user }
-  it { should be_grouped_into default_group }
-  it { should be_mode 644 }
+  it { should be_grouped_into os[:family] == "redhat" ? group : default_group }
+  it { should be_mode os[:family] == "redhat" ? 640 : 644 }
   its(:content) { should match(/^http_port\s+3128$/) }
   its(:content) { should match(/^cache_dir ufs #{ Regexp.escape(cache_dir) } 100 16 256$/) }
   its(:content) { should match(/^coredump_dir #{ Regexp.escape(coredump_dir) }$/) }
@@ -75,6 +74,27 @@ when "ubuntu"
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
     its(:content) { should match(/^SQUID_ARGS="-YC -f \$CONFIG -u 3180"/) }
+  end
+when "redhat"
+  [ "libselinux-python", "policycoreutils-python" ].each do |p|
+    describe package(p) do
+      it { should be_installed }
+    end
+  end
+
+  describe file("/etc/sysconfig/squid") do
+    it { should be_file }
+    it { should be_mode 644 }
+    it { should be_owned_by default_user }
+    it { should be_grouped_into default_group }
+    its(:content) { should match(/^SQUID_OPTS=" -u 3180"/) }
+    its(:content) { should match(/^SQUID_CONF="\/etc\/squid\/squid\.conf"/) }
+  end
+
+  describe command("semanage port -l") do
+    its(:stdout) { should match(/^squid_port_t\s+udp\s+#{ Regexp.escape(seliux_ports_udp.sort.join(", ")) }$/) }
+    its(:stderr) { should match(/^$/) }
+    its(:exit_status) { should eq 0 }
   end
 end
 

@@ -8,4 +8,8 @@ squid_conf_dir: "{{ __squid_conf_dir }}"
 squid_conf_file: "{{ __squid_conf_dir }}/squid.conf"
 squid_flags: "{{ __squid_flags }}"
 
+squid_selinux_port_tcp: [ 3128, 3401, 4827 ]
+squid_selinux_port_udp: [ 3401, 4827 ]
+squid_selinux_squid_connect_any: "yes"
+
 squid_config: []

@@ -25,3 +25,4 @@
       - "http_port 3128"
       - "cache_dir ufs {{ squid_cache_dir }} 100 16 256"
       - "coredump_dir {{ squid_coredump_dir }}"
+    squid_selinux_port_udp: [ 3401, 4827, 3180 ]

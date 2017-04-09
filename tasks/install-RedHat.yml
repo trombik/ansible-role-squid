@@ -1,0 +1,13 @@
+---
+- name: Install SELinux tools
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - libselinux-python
+    - policycoreutils-python
+
+- name: Install squid
+  yum:
+    name: squid
+    state: present

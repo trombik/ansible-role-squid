@@ -1,0 +1,7 @@
+__squid_user: squid
+__squid_group: squid
+__squid_service: squid
+__squid_cache_dir: /var/spool/squid
+__squid_conf_dir: /etc/squid
+__squid_coredump_dir: /var/spool/squid
+__squid_flags: ""
