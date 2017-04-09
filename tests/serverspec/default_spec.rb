@@ -17,6 +17,7 @@ case os[:family]
 when "freebsd"
   config = "/usr/local/etc/squid/squid.conf"
   cache_dir = "/var/squid/cache"
+  coredump_dir = "/var/squid/cache"
   default_group = "wheel"
 when "ubuntu"
   user = "proxy"
@@ -74,7 +75,7 @@ when "freebsd"
     it { should be_mode 644 }
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
-    its(:content) { should match(/^squid_flags="-u 3180"$/) }
+    its(:content) { should match(/^squid_flags=" -u 3180"$/) }
   end
 when "ubuntu"
   describe file("/etc/default/squid") do
