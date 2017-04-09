@@ -1,6 +1,10 @@
 # ansible-role-squid
 
-A brief description of the role goes here.
+Configures  `squid` proxy.
+
+## Notes for OpenBSD
+
+Currently, `squid_flags` does not work.
 
 # Requirements
 
@@ -8,9 +12,74 @@ None
 
 # Role Variables
 
-| variable | description | default |
+| Variable | Description | Default |
 |----------|-------------|---------|
+| `squid_user` | user name of `squid` | `{{ __squid_user }}` |
+| `squid_group` | group name of `squid` | `{{ __squid_group }}` |
+| `squid_log_dir` | log directory | `{{ __squid_log_dir }}` |
+| `squid_cache_dir` | cache directory | `{{ __squid_cache_dir }}` |
+| `squid_coredump_dir` | core dump directory | `{{ __squid_coredump_dir }}` |
+| `squid_service` | service name of `squid` | `{{ __squid_service }}` |
+| `squid_conf_dir` path to config directory | | `{{ __squid_conf_dir }}` |
+| `squid_conf_file` | path to `squid.conf` | `{{ __squid_conf_dir }}/squid.conf` |
+| `squid_flags` | flags to pass `squid` | `{{ __squid_flags }}` |
+| `squid_selinux_port_tcp` | list of TCP `squid_port_t` (SELinux) | `[3128, 3401, 4827]` |
+| `squid_selinux_port_udp` | list of UDP `squid_port_t` (SELinux) | `[3401, 4827]` |
+| `squid_selinux_squid_connect_any` | enable `squid_connect_any` (SELinux) | `yes` |
+| `squid_config` | list of lines of `squid.conf` | `[]` |
 
+
+## Debian
+
+| Variable | Default |
+|----------|---------|
+| `__squid_user` | `proxy` |
+| `__squid_group` | `proxy` |
+| `__squid_service` | `squid` |
+| `__squid_cache_dir` | `/var/spool/squid` |
+| `__squid_conf_dir` | `/etc/squid` |
+| `__squid_coredump_dir` | `/var/spool/squid` |
+| `__squid_log_dir` | `/var/log/squid` |
+| `__squid_flags` | `-YC -f $CONFIG` |
+
+## FreeBSD
+
+| Variable | Default |
+|----------|---------|
+| `__squid_user` | `squid` |
+| `__squid_group` | `squid` |
+| `__squid_service` | `squid` |
+| `__squid_cache_dir` | `/var/squid/cache` |
+| `__squid_conf_dir` | `/usr/local/etc/squid` |
+| `__squid_coredump_dir` | `/var/squid/cache` |
+| `__squid_log_dir` | `/var/log/squid` |
+| `__squid_flags` | `""` |
+
+## OpenBSD
+
+| Variable | Default |
+|----------|---------|
+| `__squid_user` | `_squid` |
+| `__squid_group` | `_squid` |
+| `__squid_service` | `squid` |
+| `__squid_cache_dir` | `/var/squid/cache` |
+| `__squid_conf_dir` | `/etc/squid` |
+| `__squid_coredump_dir` | `/var/squid/cache` |
+| `__squid_log_dir` | `/var/squid/logs` |
+| `__squid_flags` | `""` |
+
+## RedHat
+
+| Variable | Default |
+|----------|---------|
+| `__squid_user` | `squid` |
+| `__squid_group` | `squid` |
+| `__squid_service` | `squid` |
+| `__squid_cache_dir` | `/var/spool/squid` |
+| `__squid_conf_dir` | `/etc/squid` |
+| `__squid_coredump_dir` | `/var/spool/squid` |
+| `__squid_log_dir` | `/var/log/squid` |
+| `__squid_flags` | `""` |
 
 # Dependencies
 
@@ -19,6 +88,34 @@ None
 # Example Playbook
 
 ```yaml
+- hosts: localhost
+  roles:
+    - ansible-role-squid
+  vars:
+    squid_flags: "{{ __squid_flags }} -u 3180"
+    squid_config:
+      - "acl localnet src 10.0.0.0/8"
+      - "acl localnet src 172.16.0.0/12"
+      - "acl localnet src 192.168.0.0/16"
+      - "acl localnet src fc00::/7"
+      - "acl localnet src fe80::/10"
+      - "acl SSL_ports port 443"
+      - "acl Safe_ports port 80"
+      - "acl Safe_ports port 21"
+      - "acl Safe_ports port 443"
+      - "acl CONNECT method CONNECT"
+      - "http_access deny !Safe_ports"
+      - "http_access deny CONNECT !SSL_ports"
+      - "http_access allow localhost manager"
+      - "http_access deny manager"
+      - "http_access deny to_localhost"
+      - "http_access allow localnet"
+      - "http_access allow localhost"
+      - "http_access deny all"
+      - "http_port 3128"
+      - "cache_dir ufs {{ squid_cache_dir }} 100 16 256"
+      - "coredump_dir {{ squid_coredump_dir }}"
+    squid_selinux_port_udp: [ 3401, 4827, 3180 ]
 ```
 
 # License
