@@ -32,6 +32,15 @@ when "openbsd"
   coredump_dir = "/var/squid/cache"
   # XXX should be [ 3128, 3180 ]
   ports = [ 3128 ]
+when "debian"
+  package = "squid3"
+  service = package
+  config = "/etc/#{ package }/squid.conf"
+  log_dir = "/var/log/#{ package }"
+  cache_dir = "/var/spool/#{ package }"
+  coredump_dir = "/var/spool/#{ package }"
+  user = "proxy"
+  group = "proxy"
 end
 
 describe package(package) do

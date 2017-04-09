@@ -32,7 +32,7 @@
   notify: Restart squid
 
 - name: Create cache hier
-  command: squid -z
+  command: "{{ squid_bin }} -z"
   args:
     creates: "{{ squid_cache_dir }}/00"
 

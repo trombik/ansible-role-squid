@@ -2,5 +2,5 @@
 
 - name: Install squid
   openbsd_pkg:
-    name: squid
+    name: "{{ squid_package }}"
     state: present

@@ -19,6 +19,8 @@ None
 | `squid_log_dir` | log directory | `{{ __squid_log_dir }}` |
 | `squid_cache_dir` | cache directory | `{{ __squid_cache_dir }}` |
 | `squid_coredump_dir` | core dump directory | `{{ __squid_coredump_dir }}` |
+| `squid_package` | package name of `squid` | `{{ __squid_package }}` |
+| `squid_bin` | `basename` of `squid` binary | `{{ __squid_bin }}` |
 | `squid_service` | service name of `squid` | `{{ __squid_service }}` |
 | `squid_conf_dir` path to config directory | | `{{ __squid_conf_dir }}` |
 | `squid_conf_file` | path to `squid.conf` | `{{ __squid_conf_dir }}/squid.conf` |
@@ -35,11 +37,13 @@ None
 |----------|---------|
 | `__squid_user` | `proxy` |
 | `__squid_group` | `proxy` |
-| `__squid_service` | `squid` |
-| `__squid_cache_dir` | `/var/spool/squid` |
-| `__squid_conf_dir` | `/etc/squid` |
-| `__squid_coredump_dir` | `/var/spool/squid` |
-| `__squid_log_dir` | `/var/log/squid` |
+| `__squid_package` | `{% if ansible_distribution == 'Debian' %}squid3{% else %}squid{% endif %}` |
+| `__squid_service` | `{{ __squid_package }}` |
+| `__squid_bin` | `{{ __squid_package }}` |
+| `__squid_cache_dir` | `/var/spool/{{ __squid_package }}` |
+| `__squid_conf_dir` | `/etc/{{ __squid_package }}` |
+| `__squid_coredump_dir` | `/var/spool/{{ __squid_package }}` |
+| `__squid_log_dir` | `/var/log/{{ __squid_package }}` |
 | `__squid_flags` | `-YC -f $CONFIG` |
 
 ## FreeBSD
@@ -48,7 +52,9 @@ None
 |----------|---------|
 | `__squid_user` | `squid` |
 | `__squid_group` | `squid` |
+| `__squid_package` | `squid` |
 | `__squid_service` | `squid` |
+| `__squid_bin` | `squid` |
 | `__squid_cache_dir` | `/var/squid/cache` |
 | `__squid_conf_dir` | `/usr/local/etc/squid` |
 | `__squid_coredump_dir` | `/var/squid/cache` |
@@ -61,7 +67,9 @@ None
 |----------|---------|
 | `__squid_user` | `_squid` |
 | `__squid_group` | `_squid` |
+| `__squid_package` | `squid` |
 | `__squid_service` | `squid` |
+| `__squid_bin` | `squid` |
 | `__squid_cache_dir` | `/var/squid/cache` |
 | `__squid_conf_dir` | `/etc/squid` |
 | `__squid_coredump_dir` | `/var/squid/cache` |
@@ -74,7 +82,9 @@ None
 |----------|---------|
 | `__squid_user` | `squid` |
 | `__squid_group` | `squid` |
+| `__squid_package` | `squid` |
 | `__squid_service` | `squid` |
+| `__squid_bin` | `squid` |
 | `__squid_cache_dir` | `/var/spool/squid` |
 | `__squid_conf_dir` | `/etc/squid` |
 | `__squid_coredump_dir` | `/var/spool/squid` |

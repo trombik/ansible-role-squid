@@ -9,5 +9,5 @@
 
 - name: Install squid
   yum:
-    name: squid
+    name: "{{ squid_package }}"
     state: present
