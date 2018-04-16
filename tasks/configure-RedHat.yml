@@ -16,7 +16,7 @@
     reload: yes
     state: present
 
-- name: Enabel SELinux squid_connect_any
+- name: Enable SELinux squid_connect_any
   seboolean:
     name: squid_connect_any
     state: "{{ squid_selinux_squid_connect_any }}"
@@ -26,4 +26,5 @@
   template:
     src: RedHat.sysconfig.j2
     dest: /etc/sysconfig/squid
+    validate: sh -n %s
   notify: Restart squid

@@ -2,16 +2,18 @@
 galaxy_info:
   author: Tomoyuki Sakurai
   description: Configures squid
-  company: Reallyenglish
+  company: N/A
   license: BSD
   min_ansible_version: 2.0
   platforms:
   - name: FreeBSD
     versions:
     - 10.3
+    - 11.1
   - name: OpenBSD
     versions:
-    - 6.0
+    - 6.1
+    - 6.2
   - name: Ubuntu
     versions:
     - xenial
@@ -25,5 +27,4 @@ galaxy_info:
   galaxy_tags:
     - proxy
     - squid
-#dependencies:
-#  - { role: username.common, some_parameter: 3 }
+dependencies:

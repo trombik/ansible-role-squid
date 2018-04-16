@@ -5,10 +5,10 @@ service = "squid"
 config  = "/etc/squid/squid.conf"
 user    = "squid"
 group   = "squid"
-ports   = [ 3128, 3180 ]
-seliux_ports_udp = [ 3180, 3401, 4827 ]
+ports   = [3128, 3180]
+seliux_ports_udp = [3180, 3401, 4827]
 log_dir = "/var/log/squid"
-cache_dir  = "/var/spool/squid"
+cache_dir = "/var/spool/squid"
 coredump_dir = "/var/spool/squid"
 default_user = "root"
 default_group = "root"
@@ -31,21 +31,21 @@ when "openbsd"
   default_group = "wheel"
   coredump_dir = "/var/squid/cache"
   # XXX should be [ 3128, 3180 ]
-  ports = [ 3128 ]
+  ports = [3128]
 when "debian"
   package = "squid3"
   service = package
-  config = "/etc/#{ package }/squid.conf"
-  log_dir = "/var/log/#{ package }"
-  cache_dir = "/var/spool/#{ package }"
-  coredump_dir = "/var/spool/#{ package }"
+  config = "/etc/#{package}/squid.conf"
+  log_dir = "/var/log/#{package}"
+  cache_dir = "/var/spool/#{package}"
+  coredump_dir = "/var/spool/#{package}"
   user = "proxy"
   group = "proxy"
 end
 
 describe package(package) do
   it { should be_installed }
-end 
+end
 
 describe file(cache_dir) do
   it { should be_directory }
@@ -54,7 +54,7 @@ describe file(cache_dir) do
   it { should be_mode 750 }
 end
 
-describe file("#{ cache_dir }/00") do
+describe file("#{cache_dir}/00") do
   it { should be_directory }
   it { should be_owned_by user }
   it { should be_grouped_into group }
@@ -96,7 +96,7 @@ when "ubuntu"
     its(:content) { should match(/^SQUID_ARGS="-YC -f \$CONFIG -u 3180"/) }
   end
 when "redhat"
-  [ "libselinux-python", "policycoreutils-python" ].each do |p|
+  ["libselinux-python", "policycoreutils-python"].each do |p|
     describe package(p) do
       it { should be_installed }
     end
@@ -108,7 +108,7 @@ when "redhat"
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
     its(:content) { should match(/^SQUID_OPTS=" -u 3180"/) }
-    its(:content) { should match(/^SQUID_CONF="\/etc\/squid\/squid\.conf"/) }
+    its(:content) { should match(%r{^SQUID_CONF="/etc/squid/squid\.conf"}) }
   end
 
   describe command("semanage port -l") do
@@ -140,7 +140,7 @@ ports.each do |p|
 end
 
 describe command("env http_proxy=http://127.0.0.1:3128 HTTPS_PROXY=http://127.0.0.1:3128 curl -sL -o /dev/null -D - http://example.org") do
-  its(:stdout) { should match (/^HTTP\/1\.\d 200 OK/) }
-  its(:stderr) { should match (/^$/) }
+  its(:stdout) { should match(%r{^HTTP/1\.\d 200 OK$}) }
+  its(:stderr) { should eq "" }
   its(:exit_status) { should eq 0 }
 end

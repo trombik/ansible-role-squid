@@ -28,7 +28,7 @@ None
 | `squid_selinux_port_tcp` | list of TCP `squid_port_t` (SELinux) | `[3128, 3401, 4827]` |
 | `squid_selinux_port_udp` | list of UDP `squid_port_t` (SELinux) | `[3401, 4827]` |
 | `squid_selinux_squid_connect_any` | enable `squid_connect_any` (SELinux) | `yes` |
-| `squid_config` | list of lines of `squid.conf` | `[]` |
+| `squid_config` | content of `squid.conf` | `""` |
 
 
 ## Debian
@@ -103,28 +103,28 @@ None
     - ansible-role-squid
   vars:
     squid_flags: "{{ __squid_flags }} -u 3180"
-    squid_config:
-      - "acl localnet src 10.0.0.0/8"
-      - "acl localnet src 172.16.0.0/12"
-      - "acl localnet src 192.168.0.0/16"
-      - "acl localnet src fc00::/7"
-      - "acl localnet src fe80::/10"
-      - "acl SSL_ports port 443"
-      - "acl Safe_ports port 80"
-      - "acl Safe_ports port 21"
-      - "acl Safe_ports port 443"
-      - "acl CONNECT method CONNECT"
-      - "http_access deny !Safe_ports"
-      - "http_access deny CONNECT !SSL_ports"
-      - "http_access allow localhost manager"
-      - "http_access deny manager"
-      - "http_access deny to_localhost"
-      - "http_access allow localnet"
-      - "http_access allow localhost"
-      - "http_access deny all"
-      - "http_port 3128"
-      - "cache_dir ufs {{ squid_cache_dir }} 100 16 256"
-      - "coredump_dir {{ squid_coredump_dir }}"
+    squid_config: |
+      acl localnet src 10.0.0.0/8
+      acl localnet src 172.16.0.0/12
+      acl localnet src 192.168.0.0/16
+      acl localnet src fc00::/7
+      acl localnet src fe80::/10
+      acl SSL_ports port 443
+      acl Safe_ports port 80
+      acl Safe_ports port 21
+      acl Safe_ports port 443
+      acl CONNECT method CONNECT
+      http_access deny !Safe_ports
+      http_access deny CONNECT !SSL_ports
+      http_access allow localhost manager
+      http_access deny manager
+      http_access deny to_localhost
+      http_access allow localnet
+      http_access allow localhost
+      http_access deny all
+      http_port 3128
+      cache_dir ufs {{ squid_cache_dir }} 100 16 256
+      coredump_dir {{ squid_coredump_dir }}
     squid_selinux_port_udp: [ 3401, 4827, 3180 ]
 ```
 

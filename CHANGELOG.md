@@ -1,3 +1,9 @@
+## Release x.y.z
+
+This release introduce backward-incompatibility.
+
+`squid_config` had been a list, but now it is a string.
+
 ## Release 1.1.1
 
 The previous release does not include any changes.
