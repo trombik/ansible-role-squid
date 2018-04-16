@@ -1,4 +1,7 @@
-## Release x.y.z
+## Release 2.0.0
+
+* 7560a95 [bugfix] QA (#6)
+* a028785 [backward-incompatible] make `squid_config` a string (#5)
 
 This release introduce backward-incompatibility.
 
