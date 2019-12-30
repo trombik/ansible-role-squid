@@ -2,10 +2,6 @@
 
 Configures  `squid` proxy.
 
-## Notes for OpenBSD
-
-Currently, `squid_flags` does not work.
-
 # Requirements
 
 None
