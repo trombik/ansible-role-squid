@@ -31,7 +31,7 @@ when "openbsd"
   default_group = "wheel"
   coredump_dir = "/var/squid/cache"
   # XXX should be [ 3128, 3180 ]
-  ports = [3128]
+  ports = [3128, 3180]
 when "debian"
   package = "squid3"
   service = package
