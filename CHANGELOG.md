@@ -1,3 +1,14 @@
+## Release 3.0.0
+
+* 6c65df6 bugfix: QA
+* 51d10b2 backward incompatible: change the meaning of squid_flags
+* c41edfe bugfix: bump platform versions
+* 3b31b5d bugfix: update gems
+* d0f153a bugfix: QA
+
+`squid_flags` is now the content of startup scripts, or simply a flag
+(OpenBSD).  You should change `squid_flags`.
+
 ## Release 2.0.0
 
 * 7560a95 [bugfix] QA (#6)
