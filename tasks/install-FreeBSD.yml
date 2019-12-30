@@ -4,3 +4,16 @@
   pkgng:
     name: "{{ squid_package }}"
     state: present
+
+- name: Create rc.d fragment
+  template:
+    src: FreeBSD.rc.d.j2
+    dest: /etc/rc.conf.d/squid
+    validate: sh -n %s
+  notify: Restart squid
+
+- name: Enable squid_service
+  service:
+    name: "{{ squid_service }}"
+    enabled: yes
+    arguments: "{{ squid_flags }}"

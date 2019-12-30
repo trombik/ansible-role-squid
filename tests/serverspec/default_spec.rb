@@ -85,7 +85,7 @@ when "freebsd"
     it { should be_mode 644 }
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
-    its(:content) { should match(/^squid_flags=" -u 3180"$/) }
+    its(:content) { should match(/^squid_flags="-u 3180"$/) }
   end
 when "ubuntu"
   describe file("/etc/default/squid") do
@@ -107,7 +107,7 @@ when "redhat"
     it { should be_mode 644 }
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
-    its(:content) { should match(/^SQUID_OPTS=" -u 3180"/) }
+    its(:content) { should match(/^SQUID_OPTS="-u 3180"/) }
     its(:content) { should match(%r{^SQUID_CONF="/etc/squid/squid\.conf"}) }
   end
 
@@ -122,9 +122,7 @@ when "openbsd"
     it { should be_mode 644 }
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
-    # XXX service module for OpenBSD has a bug that removes lines starting with
-    # service name
-    # its(:content) { should match(/^squid_flags=" -u 3180"$/) }
+    its(:content) { should match(/^squid_flags=-u 3180$/) }
   end
 end
 

@@ -24,12 +24,19 @@ None
 | `squid_service` | service name of `squid` | `{{ __squid_service }}` |
 | `squid_conf_dir` path to config directory | | `{{ __squid_conf_dir }}` |
 | `squid_conf_file` | path to `squid.conf` | `{{ __squid_conf_dir }}/squid.conf` |
-| `squid_flags` | flags to pass `squid` | `{{ __squid_flags }}` |
+| `squid_flags` | flags to pass `squid`. see below | `""` |
 | `squid_selinux_port_tcp` | list of TCP `squid_port_t` (SELinux) | `[3128, 3401, 4827]` |
 | `squid_selinux_port_udp` | list of UDP `squid_port_t` (SELinux) | `[3401, 4827]` |
 | `squid_selinux_squid_connect_any` | enable `squid_connect_any` (SELinux) | `yes` |
 | `squid_config` | content of `squid.conf` | `""` |
 
+## `squid_flags`
+
+This variable is used for overriding defaults for startup scripts. In Debian
+variants, the value is the content of `/etc/default/squid`. In RedHat
+variants, it is the content of `/etc/sysconfig/squid`. In FreeBSD, it
+is the content of `/etc/rc.conf.d/squid`. In OpenBSD, the value is
+passed to `rcctl set squid`.
 
 ## Debian
 
@@ -98,11 +105,22 @@ None
 # Example Playbook
 
 ```yaml
+---
 - hosts: localhost
   roles:
     - ansible-role-squid
   vars:
-    squid_flags: "{{ __squid_flags }} -u 3180"
+    os_squid_flags:
+      FreeBSD: |
+        squid_flags="-u 3180"
+      OpenBSD: "-u 3180"
+      Debian: |
+        SQUID_ARGS="-YC -f $CONFIG -u 3180"
+      RedHat: |
+        SQUID_OPTS="-u 3180"
+        SQUID_SHUTDOWN_TIMEOUT=100
+        SQUID_CONF="{{ squid_conf_file }}"
+    squid_flags: "{{ os_squid_flags[ansible_os_family] }}"
     squid_config: |
       acl localnet src 10.0.0.0/8
       acl localnet src 172.16.0.0/12

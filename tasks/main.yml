@@ -39,5 +39,4 @@
 - name: Start squid
   service:
     name: "{{ squid_service }}"
-    enabled: true
     state: started

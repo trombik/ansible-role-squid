@@ -11,3 +11,16 @@
   yum:
     name: "{{ squid_package }}"
     state: present
+
+- name: Create default for squid init script
+  template:
+    src: RedHat.sysconfig.j2
+    dest: /etc/sysconfig/squid
+    validate: sh -n %s
+    backup: yes
+  notify: Restart squid
+
+- name: Enable squid_service
+  service:
+    name: "{{ squid_service }}"
+    enabled: yes

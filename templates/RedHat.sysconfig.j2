@@ -1,7 +1,3 @@
 # Managed by ansible
-SQUID_OPTS="{{ squid_flags }}"
 
-# Time to wait for Squid to shut down when asked. Should not be necessary
-# most of the time.
-SQUID_SHUTDOWN_TIMEOUT=100
-SQUID_CONF="{{ squid_conf_file }}"
+{{ squid_flags }}

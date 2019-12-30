@@ -2,7 +2,17 @@
   roles:
     - ansible-role-squid
   vars:
-    squid_flags: "{{ __squid_flags }} -u 3180"
+    os_squid_flags:
+      FreeBSD: |
+        squid_flags="-u 3180"
+      OpenBSD: "-u 3180"
+      Debian: |
+        SQUID_ARGS="-YC -f $CONFIG -u 3180"
+      RedHat: |
+        SQUID_OPTS="-u 3180"
+        SQUID_SHUTDOWN_TIMEOUT=100
+        SQUID_CONF="{{ squid_conf_file }}"
+    squid_flags: "{{ os_squid_flags[ansible_os_family] }}"
     squid_config: |
       acl localnet src 10.0.0.0/8
       acl localnet src 172.16.0.0/12
